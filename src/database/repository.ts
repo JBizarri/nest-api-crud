@@ -1,37 +1,26 @@
-import _ from 'lodash';
-import { DATABASE, Table } from './database';
+import { BaseDao } from './dao';
 import { BaseEntity } from './entity';
 
-export class BaseRepository<T extends BaseEntity> {
-  private table: Table<T>;
+export class BaseRepository<T extends BaseEntity, K extends BaseDao<T>> {
+  protected dao: K;
 
-  constructor(tablename: string) {
-    this.table = DATABASE.tables[tablename];
+  constructor(dao: K) {
+    this.dao = dao;
   }
 
   list(): T[] {
-    return this.table.data.slice();
+    return this.dao.list();
   }
 
   find(id: number): T {
-    return this.table.data.find((user) => user.id === id);
+    return this.dao.find(id);
   }
 
   delete(id: number): void {
-    _.remove(this.table.data, (user) => user.id === id);
+    this.dao.delete(id);
   }
 
   save(obj: T): T {
-    if (obj.id) {
-      this.table.data.splice(
-        this.table.data.findIndex((user) => user.id === obj.id),
-        1,
-        obj,
-      );
-    } else {
-      obj.id = this.table.currentPk++;
-      this.table.data.push(obj);
-    }
-    return obj;
+    return this.dao.save(obj);
   }
 }

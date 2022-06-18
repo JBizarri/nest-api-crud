@@ -3,17 +3,18 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserRepository } from './entities/user.repository';
+import { UserStatus } from './user.definition';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly repository: UserRepository) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.repository.save(new User({ ...createUserDto }));
+    return this.repository.save(User.create({ ...createUserDto }));
   }
 
-  findAll() {
-    return this.repository.list();
+  findAll(status?: UserStatus) {
+    return this.repository.list(status);
   }
 
   findOne(id: number) {
