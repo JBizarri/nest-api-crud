@@ -18,7 +18,9 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.repository.find(id);
+    const user = this.repository.find(id);
+    if (!user) throw new NotFoundException();
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -30,6 +32,9 @@ export class UsersService {
   }
 
   remove(id: number) {
+    const user = this.repository.find(id);
+    if (!user) throw new NotFoundException();
+
     this.repository.delete(id);
   }
 }
