@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@users/*": ["src/users/*"],
-      "@database/*": ["src/database/*"]
+      "@database/*": ["libs/database/*"],
+      "@interceptors/*": ["libs/interceptors/*"]
     }
   }
 }
