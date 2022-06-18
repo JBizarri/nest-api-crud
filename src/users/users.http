@@ -12,3 +12,12 @@ Content-Type: application/json
   "name": "nome",
   "isAdmin": true
 }
+
+###
+PATCH {{url}}/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "outro nome",
+  "isAdmin": true
+}
