@@ -28,6 +28,7 @@ export class UsersService {
     if (!user) throw new NotFoundException();
 
     user.name = updateUserDto.name;
+    user.transition(updateUserDto.status);
     return this.repository.save(user);
   }
 

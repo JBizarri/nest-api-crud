@@ -1,12 +1,14 @@
 import { BaseEntity } from '@database/entity';
 import { UserStatus } from '../user.definition';
+import { UserState } from './states/user.state';
+import { UserStateFactory } from './states/user.state.factory';
 
 interface CreateUserProps {
   name: string;
 }
 
 interface UserProps extends CreateUserProps {
-  status: UserStatus;
+  state: UserState;
 }
 
 export class User extends BaseEntity {
@@ -18,7 +20,10 @@ export class User extends BaseEntity {
   }
 
   static create(props: CreateUserProps): User {
-    return new User({ ...props, status: UserStatus.PENDING });
+    return new User({
+      ...props,
+      state: UserStateFactory.create(UserStatus.PENDING),
+    });
   }
 
   get name() {
@@ -30,10 +35,14 @@ export class User extends BaseEntity {
   }
 
   get status() {
-    return this.props.status;
+    return this.props.state.state;
   }
 
   set status(val: UserStatus) {
-    if (val) this.props.status = val;
+    this.props.state = UserStateFactory.create(val);
+  }
+
+  transition(val: UserStatus) {
+    if (val) this.props.state.transition(this, val);
   }
 }
