@@ -9,6 +9,8 @@ export class UserDao extends BaseDao<User> {
 
   filterAll(status?: UserStatus): User[] {
     if (!status) return this.list();
-    return this.list().filter((user) => user.status === status);
+    return this.list()
+      .filter((user) => user.status === status)
+      .slice();
   }
 }

@@ -14,7 +14,7 @@ export class BaseDao<T extends BaseEntity> {
   }
 
   find(id: number): T {
-    return this.table.data.find((user) => user.id === id);
+    return _.cloneDeep(this.table.data.find((user) => user.id === id));
   }
 
   delete(id: number): void {
@@ -27,7 +27,7 @@ export class BaseDao<T extends BaseEntity> {
     } else {
       this.create(obj);
     }
-    return obj;
+    return _.cloneDeep(obj);
   }
 
   private update(obj: T): T {
