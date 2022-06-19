@@ -20,7 +20,8 @@
     "paths": {
       "@users/*": ["src/users/*"],
       "@database/*": ["libs/database/*"],
-      "@interceptors/*": ["libs/interceptors/*"]
+      "@interceptors/*": ["libs/interceptors/*"],
+      "@src/*": ["src/*"]
     }
   }
 }

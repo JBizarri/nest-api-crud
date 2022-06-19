@@ -74,6 +74,13 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "modulePaths": ["src", "libs"],
+    "moduleNameMapper": {
+      "^@users(.*)$": "<rootDir>/src/users$1",
+      "^@database(.*)$": "<rootDir>/libs/database$1",
+      "^@interceptors(.*)$": "<rootDir>/libs/interceptors$1",
+      "^@src(.*)$": "<rootDir>/src$1"
+    }
   }
 }

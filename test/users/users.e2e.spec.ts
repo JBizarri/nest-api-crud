@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { configApp } from '@src/main.config';
+import { UsersModule } from '@users/users.module';
 import * as request from 'supertest';
-import { configApp } from '../../src/main.config';
-import { UsersModule } from '../../src/users/users.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -19,22 +19,32 @@ describe('AppController (e2e)', () => {
 
   describe('Create, update then delete a User', () => {
     it('should succeed', async () => {
-      await request(app.getHttpServer())
+      const response = await request(app.getHttpServer())
         .post('/users')
         .send({ name: 'nome' })
         .expect(201)
-        .expect('This action adds a new user with {"name":"nome"}');
+        .expect((res) =>
+          expect(res.body).toMatchObject({
+            id: res.body.id,
+            name: 'nome',
+            status: 'PENDING',
+          }),
+        );
 
       await request(app.getHttpServer())
-        .patch('/users/10')
-        .send({ name: 'nome' })
+        .patch(`/users/${response.body.id}`)
+        .send({ name: 'outro nome' })
         .expect(200)
-        .expect('This action updates a #10 user with {"name":"nome"}');
+        .expect({
+          id: response.body.id,
+          name: 'outro nome',
+          status: 'PENDING',
+        });
 
       await request(app.getHttpServer())
-        .delete('/users/10')
+        .delete(`/users/${response.body.id}`)
         .expect(200)
-        .expect('This action removes a #10 user');
+        .expect({ statusCode: 200, message: 'OK' });
     });
   });
 });

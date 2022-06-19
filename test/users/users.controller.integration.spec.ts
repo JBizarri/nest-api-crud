@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { configApp } from '@src/main.config';
+import { UsersModule } from '@users/users.module';
 import * as request from 'supertest';
-import { configApp } from '../../src/main.config';
-import { UsersModule } from '../../src/users/users.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -19,10 +19,7 @@ describe('AppController (e2e)', () => {
 
   describe('Users resource (SUCCESS)', () => {
     it('/users (GET)', () => {
-      return request(app.getHttpServer())
-        .get('/users')
-        .expect(200)
-        .expect('This action returns all users');
+      return request(app.getHttpServer()).get('/users').expect(200).expect([]);
     });
 
     it('/users (POST)', () => {
@@ -30,29 +27,49 @@ describe('AppController (e2e)', () => {
         .post('/users')
         .send({ name: 'nome' })
         .expect(201)
-        .expect('This action adds a new user with {"name":"nome"}');
+        .expect((res) =>
+          expect(res.body).toMatchObject({
+            id: res.body.id,
+            name: 'nome',
+            status: 'PENDING',
+          }),
+        );
     });
 
-    it('/users/:id (PATCH)', () => {
+    it('/users/:id (PATCH)', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/users')
+        .send({ name: 'nome' });
+
       return request(app.getHttpServer())
-        .patch('/users/10')
+        .patch(`/users/${response.body.id}`)
+        .send({ name: 'nome 2' })
+        .expect(200)
+        .expect({ id: response.body.id, name: 'nome 2', status: 'PENDING' });
+    });
+
+    it('/users/:id (DELETE)', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/users')
+        .send({ name: 'nome' });
+
+      return request(app.getHttpServer())
+        .delete(`/users/${response.body.id}`)
         .send({ name: 'nome' })
         .expect(200)
-        .expect('This action updates a #10 user with {"name":"nome"}');
+        .expect({ statusCode: 200, message: 'OK' });
     });
 
-    it('/users/:id (DELETE)', () => {
-      return request(app.getHttpServer())
-        .delete('/users/20')
-        .expect(200)
-        .expect('This action removes a #20 user');
-    });
+    it('/users/:id (GET)', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/users')
+        .send({ name: 'nome' });
 
-    it('/users/:id (GET)', () => {
       return request(app.getHttpServer())
-        .get('/users/30')
+        .get(`/users/${response.body.id}`)
+        .send({ name: 'nome' })
         .expect(200)
-        .expect('This action returns a #30 user');
+        .expect({ id: response.body.id, name: 'nome', status: 'PENDING' });
     });
   });
 
@@ -74,29 +91,29 @@ describe('AppController (e2e)', () => {
 
     it('/users/:id (PATCH) wrong body', () => {
       return request(app.getHttpServer())
-        .patch('/users/10')
+        .patch('/users/100')
         .send({ name: true })
         .expect(400);
     });
 
     it('/users/:id (PATCH) wrong id', () => {
       return request(app.getHttpServer())
-        .patch('/users/20a')
+        .patch('/users/100abc')
         .send({ name: 'nome' })
         .expect(400);
     });
 
     it('/users/:id (DELETE) wrong id', () => {
-      return request(app.getHttpServer()).delete('/users/30b').expect(400);
+      return request(app.getHttpServer()).delete('/users/100abc').expect(400);
     });
 
     it('/users/:id (GET) wrong id', () => {
-      return request(app.getHttpServer()).get('/users/40c').expect(400);
+      return request(app.getHttpServer()).get('/users/100abc').expect(400);
     });
 
     it('/users/:id (POST) unmapped endpoint', () => {
       return request(app.getHttpServer())
-        .post('/users/40/unmapped-action')
+        .post('/users/100/unmapped-action')
         .expect(404);
     });
   });
