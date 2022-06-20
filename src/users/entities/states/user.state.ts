@@ -8,5 +8,5 @@ export abstract class UserState {
     this.state = state;
   }
 
-  abstract transition(context: User, to: UserStatus): void;
+  abstract transition(to: UserStatus, context: User): void;
 }

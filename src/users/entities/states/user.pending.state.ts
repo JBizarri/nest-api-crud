@@ -7,7 +7,7 @@ export class UserPendingState extends UserState {
     super(UserStatus.PENDING);
   }
 
-  transition(context: User, to: UserStatus) {
+  transition(to: UserStatus, context: User) {
     context.status = to;
   }
 }

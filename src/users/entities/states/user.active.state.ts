@@ -8,7 +8,7 @@ export class UserActiveState extends UserState {
     super(UserStatus.ACTIVE);
   }
 
-  transition(context: User, to: UserStatus) {
+  transition(to: UserStatus, context: User) {
     if (context.status === to) return;
 
     if (to === UserStatus.INACTIVE) {

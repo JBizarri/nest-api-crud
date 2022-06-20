@@ -42,7 +42,7 @@ export class User extends BaseEntity {
     });
   }
 
-  transition(val: UserStatus) {
-    if (val) this.props.state.transition(this, val);
+  transition(status: UserStatus) {
+    if (status) this.props.state.transition(status, this);
   }
 }
