@@ -1,4 +1,4 @@
-import { BaseEntity } from '@database/entity';
+import { BaseEntity } from '@ddd/entity';
 import { UserStatus } from '../user.definition';
 import { UserState } from './states/user.state';
 import { UserStateFactory } from './states/user.state.factory';

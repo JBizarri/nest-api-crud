@@ -1,4 +1,4 @@
-import { BaseRepository } from '@database/repository';
+import { BaseRepository } from '@ddd/repository';
 import { Injectable } from '@nestjs/common';
 import { UserStatus } from '@users/user.definition';
 import { UserDao } from './user.dao';

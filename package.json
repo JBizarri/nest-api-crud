@@ -78,7 +78,7 @@
     "modulePaths": ["src", "libs"],
     "moduleNameMapper": {
       "^@users(.*)$": "<rootDir>/src/users$1",
-      "^@database(.*)$": "<rootDir>/libs/database$1",
+      "^@ddd(.*)$": "<rootDir>/libs/ddd$1",
       "^@interceptors(.*)$": "<rootDir>/libs/interceptors$1",
       "^@src(.*)$": "<rootDir>/src$1"
     }

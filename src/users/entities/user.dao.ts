@@ -1,4 +1,4 @@
-import { BaseDao } from '@database/dao';
+import { BaseDao } from '@ddd/dao';
 import { UserStatus } from '@users/user.definition';
 import { User } from './user.entity';
 

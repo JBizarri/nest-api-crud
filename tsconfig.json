@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@users/*": ["src/users/*"],
-      "@database/*": ["libs/database/*"],
+      "@ddd/*": ["libs/ddd/*"],
       "@interceptors/*": ["libs/interceptors/*"],
       "@src/*": ["src/*"]
     }
