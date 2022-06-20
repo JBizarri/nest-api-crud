@@ -19,13 +19,6 @@ export class User extends BaseEntity {
     this.props = { ...props };
   }
 
-  static create(props: CreateUserProps): User {
-    return new User({
-      ...props,
-      state: UserStateFactory.create(UserStatus.PENDING),
-    });
-  }
-
   get name() {
     return this.props.name;
   }
@@ -40,6 +33,13 @@ export class User extends BaseEntity {
 
   set status(val: UserStatus) {
     this.props.state = UserStateFactory.create(val);
+  }
+
+  static create(props: CreateUserProps): User {
+    return new User({
+      ...props,
+      state: UserStateFactory.create(UserStatus.PENDING),
+    });
   }
 
   transition(val: UserStatus) {
