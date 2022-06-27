@@ -19,9 +19,13 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@users/*": ["src/users/*"],
+      "@users": ["src/users"],
       "@ddd/*": ["libs/ddd/*"],
+      "@ddd": ["libs/ddd"],
       "@interceptors/*": ["libs/interceptors/*"],
-      "@src/*": ["src/*"]
+      "@interceptors": ["libs/interceptors"],
+      "@src/*": ["src/*"],
+      "@src": ["src"]
     }
   }
 }
